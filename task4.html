@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>task4</title>
+</head>
+<style>
+    .li{
+        float: right;
+        background-color: red;
+        color: #ffffff;
+        margin: 10px;
+        cursor: pointer;
+    }
+    .ri{
+        float: left;
+        background-color: red;
+        color: #ffffff;
+        margin: 10px;
+        cursor: pointer;
+    }
+    .output{
+        float: left;
+    }
+    .clearfix:before,
+    .clearfix:after{
+        display: table;
+        content: '';
+    }
+    .clearfix:after{
+        clear: both;
+    }
+    .clearfix{
+        *zomm:1;
+    }
+</style>
+<body>
+<div>
+    <input id="input">
+    <button id="left-in">左侧入</button>
+    <button id="right-in">右侧入</button>
+    <button id="left-out">左侧出</button>
+    <button id="right-out">右侧出</button>
+</div>
+
+<div class="output clearfix" id="output-left"></div>
+<div class="output clearfix" id="output-right"></div>
+</body>
+<script>
+
+    function leftIn() {
+        var input = document.getElementById('input');
+        var e = document.createElement('e');
+        e.type = 'div';
+        e.className = 'li';
+        e.innerHTML = input.value;
+        document.getElementById('output-left').appendChild(e);
+        e.addEventListener('click',function () {
+            e.parentNode.removeChild(e);
+        });
+
+    }
+    function rightIn() {
+        var input = document.getElementById('input');
+//        document.getElementById('output-right').innerHTML += '<div class="ri">'+input.value+'</div>';
+
+        var e = document.createElement('e');
+        e.type = 'div';
+        e.className = 'ri';
+        e.innerHTML = input.value;
+        document.getElementById('output-right').appendChild(e);
+        e.addEventListener('click',function () {
+            e.parentNode.removeChild(e);
+        });
+    }
+    function leftOut() {
+        if(document.getElementById('output-left').childElementCount!=0){
+            var ol = document.getElementsByClassName('li');
+            var remove = ol[ol.length-1];
+        }
+        else{
+            var or = document.getElementsByClassName('ri');
+            var remove = or[0];
+        }
+        remove.parentNode.removeChild(remove);
+        alert('删除'+remove['innerHTML']);
+
+    }
+    function rightOut() {
+        if(document.getElementById('output-right').childElementCount!=0){
+            var or = document.getElementsByClassName('ri');
+            var remove = or[or.length-1];
+        }
+        else{
+            var ol = document.getElementsByClassName('li');
+            var remove = ol[0];
+        }
+        remove.parentNode.removeChild(remove);
+        alert('删除'+remove['innerHTML']);
+    }
+    function init() {
+        //按钮绑定事件
+        document.getElementById('left-in').addEventListener('click',function () {
+            leftIn();
+        });
+        document.getElementById('right-in').addEventListener('click',function () {
+            rightIn();
+        });
+        document.getElementById('left-out').addEventListener('click',function () {
+            leftOut();
+        });
+        document.getElementById('right-out').addEventListener('click',function () {
+            rightOut();
+        });
+
+        //元素绑定事件
+
+    }
+
+    init();
+</script>
+</html>
