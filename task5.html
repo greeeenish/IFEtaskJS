@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>task5</title>
+</head>
+<style>
+    .output{
+        float: left;
+
+        /*width: 200px;*/
+        height: 300px;
+
+
+
+    }
+
+    .li{
+        float: right;
+        background-color: red;
+        color: #ffffff;
+        margin: 10px;
+        cursor: pointer;
+
+        width: 30px;
+        /*position: absolute;*/
+        /*bottom: 0;*/
+
+    }
+    .ri{
+        float: left;
+        background-color: red;
+        color: #ffffff;
+        margin: 30px;
+        cursor: pointer;
+
+        width: 30px;
+        /*position: absolute;*/
+        bottom: 0;
+    }
+
+    .clearfix:before,
+    .clearfix:after{
+        display: table;
+        content: '';
+    }
+    .clearfix:after{
+        clear: both;
+    }
+    .clearfix{
+        *zomm:1;
+    }
+</style>
+<body>
+<div>
+    <input id="input">
+    <button id="left-in">左侧入</button>
+    <button id="right-in">右侧入</button>
+    <button id="left-out">左侧出</button>
+    <button id="right-out">右侧出</button>
+    <button id="sort">排序</button>
+</div>
+
+    <div class="output clearfix" id="output-left">
+        <!--<div class="li">22</div>-->
+        <!--<div class="li">55</div>-->
+    </div>
+    <div class="output clearfix" id="output-right">
+        <!--<div class="ri">44</div>-->
+        <!--<div class="ri">33</div>-->
+        <!--<div class="ri">99</div>-->
+    </div>
+
+</body>
+<script>
+
+    function leftIn() {
+        var input = document.getElementById('input');
+
+        if(input.value>10 && input.value<100) {
+            var e = document.createElement('div');
+            e.type = 'div';
+            e.className = 'li';
+            e.innerHTML = input.value;
+            e.style.height = input.value + 'px';
+            e.style.marginTop = (100 - input.value) + "px";
+
+            document.getElementById('output-left').appendChild(e);
+            e.addEventListener('click', function () {
+                e.parentNode.removeChild(e);
+            });
+        }else {
+            alert('10-100');
+        }
+
+    }
+    function rightIn() {
+        var input = document.getElementById('input');
+//        document.getElementById('output-right').innerHTML += '<div class="ri">'+input.value+'</div>';
+        if(input.value>10 && input.value<100) {
+            var e = document.createElement('div');
+            e.type = 'div';
+            e.className = 'ri';
+            e.innerHTML = input.value;
+            e.style.height = input.value + 'px';
+            e.style.marginTop = (100 - input.value) + "px";
+
+            document.getElementById('output-right').appendChild(e);
+            e.addEventListener('click',function () {
+                e.parentNode.removeChild(e);
+            });
+        }else {
+            alert('10-100');
+        }
+    }
+    function leftOut() {
+        if(document.getElementById('output-left').childElementCount!=0){
+            var ol = document.getElementsByClassName('li');
+            var remove = ol[ol.length-1];
+        }
+        else{
+            var or = document.getElementsByClassName('ri');
+            var remove = or[0];
+        }
+        remove.parentNode.removeChild(remove);
+        alert('删除'+remove['innerHTML']);
+
+    }
+    function rightOut() {
+        if(document.getElementById('output-right').childElementCount!=0){
+            var or = document.getElementsByClassName('ri');
+            var remove = or[or.length-1];
+        }
+        else{
+            var ol = document.getElementsByClassName('li');
+            var remove = ol[0];
+        }
+        remove.parentNode.removeChild(remove);
+        alert('删除'+remove['innerHTML']);
+    }
+
+    function mySort() {
+        var ri = document.getElementById('output-right').children;
+        console.log(ri);
+
+        var newli = [];
+        var k;
+
+        var right = document.getElementById('output-right');
+        var left = document.getElementById('output-left');
+
+        for(k=ri.length-1;k>=0;k--){
+
+            var e = document.createElement('div');
+            e.type = 'div';
+            e.className = 'li';
+            e.innerHTML = ri[k].innerHTML;
+            e.style.height = ri[k].innerHTML + 'px';
+            e.style.marginTop = (100 - ri[k].innerHTML) + "px";
+
+            newli[k] = e;
+
+//            console.log(newli[k]);
+
+            left.appendChild(newli[k]);
+            ri[k].parentNode.removeChild(ri[k]);
+
+        }
+
+//        var list = document.getElementById('output-left').childNodes;
+        var list = document.getElementById("output-left");
+
+        var listArr = list.children;
+
+
+//        for (var i = 0 ; i < listArr.length ; i ++){
+//            for(var j = 0 ; j < listArr.length - i -1 ; j ++){
+//                if(parseInt(listArr[j].innerHTML) > parseInt(listArr[j+1].innerHTML)){
+//                    list.insertBefore(listArr[j+1],listArr[j]);
+//                }
+//            }
+//        }
+
+        //插入排序
+        for(var i=0; i<listArr.length; i++){
+            for (var j=i-1; j>=0;j--){
+                if(parseInt(listArr[j+1].innerHTML) < parseInt(listArr[j].innerHTML)){
+                    list.insertBefore(listArr[j+1],listArr[j]);
+                }
+            }
+        }
+
+    }
+    //插入排序
+    function insertionSort(arr) {
+        if(arr.length<=1){
+            return arr;
+        }
+
+        for(var i=0; i<arr.length; i++){
+            for(var j =i-1; j>=0; j--){
+                if(arr[j+1]<arr[j]){
+                    var temp = arr[j+1];
+                    arr[j+1] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+        return arr;
+    }
+    
+    //冒泡排序
+    function bubbleSort(arr) {
+        if(arr.length<=1){
+            return arr;
+        }
+        for(var i=0; i<arr.length; i++){
+            for(var j=0;j<arr.length-i;j++){
+                if(arr[j+1]<arr[j]){
+                    var temp = arr[j+1];
+                    arr[j+1] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+        return arr;
+    }
+
+    //选择排序
+    function selectionSort(arr) {
+        if(arr.length<=1){
+            return arr;
+        }
+
+        var min;
+        for(var i=0;i<arr.length;i++){
+            min = i;
+            for(var j=i+1; j<arr.length;j++){
+                if(arr[min]>arr[j]){
+                    min = j;
+                    var temp = arr[min];
+                    arr[min] = arr[i];
+                    arr[i] = temp;
+                }
+            }
+        }
+        return arr;
+    }
+
+    //快速排序
+    function quickSort(arr) {
+        if(arr.length<=1){
+            return arr.slice(0);    //slice()方法可从已有的数组中返回选定的元素。
+        }
+        var left = [];
+        var right = [];
+        var mid = [arr[0]];     //数组第一个元素作为枢纽元
+        for(var i=1; i<arr.length; i++){    //i=1
+            if(arr[i]<mid[0]){
+                left.push(arr[i]);
+            }
+            else {
+                right.push(arr[i]);
+            }
+        }
+        return quickSort(left).concat(mid.concat(quickSort(right)));
+    }
+    
+    function init() {
+        //按钮绑定事件
+        document.getElementById('left-in').addEventListener('click',function () {
+            leftIn();
+        });
+        document.getElementById('right-in').addEventListener('click',function () {
+            rightIn();
+        });
+        document.getElementById('left-out').addEventListener('click',function () {
+            leftOut();
+        });
+        document.getElementById('right-out').addEventListener('click',function () {
+            rightOut();
+        });
+
+        //元素绑定事件
+        
+        //排序
+        document.getElementById('sort').addEventListener('click',function () {
+//            mySort();
+            var arr = [5,6,3,7,1,9];
+            console.log(arr);
+
+            var result = quickSort(arr);
+            console.log(result);
+
+        })
+
+    }
+
+    init();
+</script>
+</html>
