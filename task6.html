@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>task 6</title>
+</head>
+
+<style>
+    .li{
+        float: right;
+        background-color: red;
+        color: #ffffff;
+        margin: 10px;
+        cursor: pointer;
+    }
+    .ri{
+        float: left;
+        background-color: red;
+        color: #ffffff;
+        margin: 10px;
+        cursor: pointer;
+    }
+    .output{
+        float: left;
+    }
+    .clearfix:before,
+    .clearfix:after{
+        display: table;
+        content: '';
+    }
+    .clearfix:after{
+        clear: both;
+    }
+    .clearfix{
+        *zomm:1;
+    }
+</style>
+<body>
+<div>
+    <textarea id="input"></textarea>
+    <button id="left-in">左侧入</button>
+    <button id="right-in">右侧入</button>
+    <button id="left-out">左侧出</button>
+    <button id="right-out">右侧出</button>
+
+    <input id="search-input">
+    <button id="search">查找</button>
+</div>
+
+<div class="output clearfix" id="output-left"></div>
+<div class="output clearfix" id="output-right"></div>
+</body>
+<script>
+    function check() {
+        var str = document.getElementById('input');
+        var words = str.value.split(/[,，、\n' ']/);
+
+
+        return words;
+    }
+    function leftIn() {
+        var input = check();
+
+        for(var i=input.length-1; i>=0; i--){
+            var e = document.createElement('div');
+            e.type = 'div';
+            e.className = 'li';
+            e.innerHTML = input[i];
+            document.getElementById('output-left').appendChild(e);
+            e.addEventListener('click',function () {
+                this.parentNode.removeChild(this);
+            });
+
+        }
+
+    }
+
+    function rightIn() {
+        var input = check();
+        for(var i=0; i<input.length; i++){
+            var e = document.createElement('div');
+            e.type = 'div';
+            e.className = 'ri';
+            e.innerHTML = input[i];
+            document.getElementById('output-right').appendChild(e);
+            e.addEventListener('click',function () {
+                this.parentNode.removeChild(this);
+            });
+        }
+
+    }
+    function leftOut() {
+        if(document.getElementById('output-left').childElementCount!=0){
+            var ol = document.getElementsByClassName('li');
+            var remove = ol[ol.length-1];
+        }
+        else{
+            var or = document.getElementsByClassName('ri');
+            var remove = or[0];
+        }
+        remove.parentNode.removeChild(remove);
+        alert('删除'+remove['innerHTML']);
+
+    }
+    function rightOut() {
+        if(document.getElementById('output-right').childElementCount!=0){
+            var or = document.getElementsByClassName('ri');
+            var remove = or[or.length-1];
+        }
+        else{
+            var ol = document.getElementsByClassName('li');
+            var remove = ol[0];
+        }
+        remove.parentNode.removeChild(remove);
+        alert('删除'+remove['innerHTML']);
+    }
+
+    function search() {
+        var arr = [];
+        var input = document.getElementById('search-input');
+        var reg = new RegExp(input.value);
+
+        var outright = document.getElementById('output-right').children;
+        var outleft = document.getElementById('output-left').children;
+
+        var i=0;
+        for(i=0; i<outright.length; i++){
+            outright[i].style.backgroundColor = 'red'
+            if(outright[i].innerHTML.match(reg)){
+                outright[i].style.backgroundColor = 'green';
+                console.log(outright[i].innerHTML)
+            }
+        }
+        for(i=0; i<outleft.length; i++){
+            outright[i].style.backgroundColor = 'red'
+            if(outleft[i].innerHTML.match(reg)){
+                outleft[i].style.backgroundColor = 'green';
+                console.log(outleft[i].innerHTML)
+            }
+        }
+
+
+    }
+
+    function init() {
+        //按钮绑定事件
+        document.getElementById('left-in').addEventListener('click',function () {
+            leftIn();
+        });
+        document.getElementById('right-in').addEventListener('click',function () {
+            rightIn();
+        });
+        document.getElementById('left-out').addEventListener('click',function () {
+            leftOut();
+        });
+        document.getElementById('right-out').addEventListener('click',function () {
+            rightOut();
+        });
+        document.getElementById('search').addEventListener('click',function () {
+            search();
+        });
+
+        //元素绑定事件
+
+    }
+
+    init();
+</script>
+</html>
